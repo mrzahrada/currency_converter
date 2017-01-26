@@ -4,7 +4,7 @@ import urllib
 import json
 
 # TODO: load from config
-symbols = ['AR$': 'ARS',
+symbols = {'AR$': 'ARS',
             '$': 'USD',
             'R$': 'BRL',
             'CL$': 'CLP',
@@ -14,8 +14,8 @@ symbols = ['AR$': 'ARS',
             '₪': 'ILS',
             '₩': 'KRW',
             '฿': 'THB',
-            '₫': 'VND',
-            'R': 'ZAR']
+            '₫': 'VND'
+            }
 
 class Money:
     def __init__(self):

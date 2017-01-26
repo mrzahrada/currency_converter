@@ -36,8 +36,6 @@ class MockResponse(object):
     def __exit__(self, exception_type, exception_value, traceback):
         pass
 
-
-
 class TestGetCode(unittest.TestCase):
 
     @patch('urllib.request.urlopen')
@@ -63,8 +61,8 @@ class TestGetCode(unittest.TestCase):
 
     def test_valid_symbol(self):
         self.assertEqual(self.money.get_code("$"), "USD")
-        self.assertEqual(self.money.get_code("€"), "GBP")
-        self.assertEqual(self.money.get_code("£"), "ISL")
+        self.assertEqual(self.money.get_code("€"), "EUR")
+        self.assertEqual(self.money.get_code("£"), "GBP")
         self.assertEqual(self.money.get_code("₩"), "KRW")
         self.assertEqual(self.money.get_code("฿"), "THB")
         self.assertEqual(self.money.get_code("₫"), "VND")
@@ -84,7 +82,6 @@ class TestSupportedCurrencies(unittest.TestCase):
             "HKD","HRK","HUF","IDR","ILS","INR","JPY","KRW","MXN","MYR",
             "NOK","NZD","PHP","PLN","RON","RUB","SEK","SGD","THB","TRY",
             "ZAR","EUR", "USD"]
-        print(result)
         self.assertCountEqual(expected, result)
 
     def tearDown(self):
