@@ -7,14 +7,20 @@ from mock import patch
 
 from currency_converter.money import Money
 
-test_data_path = "raw_data/test_rates.json"
+
+def load_data(test_data_path):
+    with open(test_data_path) as data_file:
+        data = json.load(data_file)
+    return data
+
 
 class MockResponse(object):
     '''
         Simple mock for urllib.request for downloading exchange_rates
     '''
     def __init__(self, code=200, msg='OK'):
-        self.resp_data = self.load_data()
+        data = load_data("raw_data/test_rates.json")
+        self.resp_data = codecs.encode(json.dumps(data))
         self.code = code
         self.msg = msg
         self.headers = {'content-type': 'text/plain; charset=utf-8'}
@@ -24,11 +30,6 @@ class MockResponse(object):
 
     def getcode(self):
         return self.code
-
-    def load_data(self):
-        with open(test_data_path) as data_file:
-            data = json.load(data_file)
-        return codecs.encode(json.dumps(data))
 
     def __enter__(self):
         return self
@@ -127,13 +128,13 @@ class TestDownloadRates(unittest.TestCase):
     @patch('urllib.request.urlopen')
     def setUp(self, urlopen_mock):
         urlopen_mock.return_value = MockResponse()
-        self.money =  Money()
+        self.money = Money()
+        self.rates = self.money.download_rates()
 
     def test_download(self):
-        m = MockResponse()
-        data = json.loads(m.read().decode('utf-8'))
+        data = load_data("raw_data/test_rates.json")
         data["rates"]["USD"] = 1.0
-        self.assertEqual(self.money.download_rates(), data['rates'])
+        self.assertEqual(self.rates, data['rates'])
 
     def tearDown(self):
         pass
@@ -171,8 +172,6 @@ class TestConvertFromRate(unittest.TestCase):
 
     def tearDown(self):
         pass
-
-
 
 class TestConvert(unittest.TestCase):
     @patch('urllib.request.urlopen')
