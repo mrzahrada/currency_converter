@@ -27,6 +27,8 @@ class Money:
 
     def get_code(self, currency):
         # TODO: beautify this code
+        # TODO: kr -> SEK, DKK, NOK. so for kr symbol raise exception
+        #       try_convert should return help message with possible codes
         currency = str(currency).strip().upper()
         if self.rates.get(currency) is not None:
             return currency
