@@ -138,12 +138,18 @@ class TestDownloadRates(unittest.TestCase):
     def tearDown(self):
         pass
 
-
 class TestGetRate(unittest.TestCase):
     @patch('urllib.request.urlopen')
     def setUp(self, urlopen_mock):
         urlopen_mock.return_value = MockResponse()
         self.money =  Money()
+        self.rates = {'AUD': 1.323, 'BGN': 1.8205, 'BRL': 3.1702, 'CAD': 1.3097, 'CHF': 0.99898, 'CNY': 6.8822, 'CZK': 25.153, 'DKK': 6.9223, 'GBP': 0.79422, 'HKD': 7.7579, 'HRK': 6.9792, 'HUF': 288.3, 'IDR': 13330.0, 'ILS': 3.785, 'INR': 68.08, 'JPY': 113.37, 'KRW': 1164.9, 'MXN': 21.472, 'MYR': 4.4315, 'NOK': 8.3266, 'NZD': 1.3766, 'PHP': 49.638, 'PLN': 4.0623, 'RON': 4.1875, 'RUB': 59.227, 'SEK': 8.8274, 'SGD': 1.4184, 'THB': 35.23, 'TRY': 3.8241, 'ZAR': 13.273, 'EUR': 0.93084, 'USD': 1.0}
+
+    def test_all_rates(self):
+
+        result = self.money.get_rate("USD")
+        for cur, rate in self.rates.items():
+            self.assertEqual(result[cur], rate)
 
     def tearDown(self):
         pass
