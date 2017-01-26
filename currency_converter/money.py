@@ -14,6 +14,7 @@ class Money:
         pass
 
     def download_rates(self):
+        # unittest.request.urlopen
         pass
 
     def get_rate(self, input_currency, output_currency=None):
