@@ -35,13 +35,10 @@ class Money:
         # TODO: kr -> SEK, DKK, NOK. so for kr symbol raise exception
         #       try_convert should return help message with possible codes
         currency = str(currency).strip().upper()
-        if self.rates.get(currency) is not None:
+        if currency in self.rates:
             return currency
-        else:
-            symbol = self.symbols.get(currency)
-            if symbol is not None:
-                return symbol
-        return None
+        # if currency is not in symbols, returns None
+        return self.symbols.get(currency)
 
     def supported_currencies(self):
         return self.rates.keys()
