@@ -3,6 +3,8 @@ import codecs
 import json
 import unittest
 
+from mock import patch
+
 
 test_data_path = "raw_data/test_rates.json"
 
