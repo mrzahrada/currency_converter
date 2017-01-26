@@ -3,6 +3,11 @@
 import urllib
 import json
 
+from operator import mul
+from toolz import valmap
+from toolz.functoolz import  partial
+
+
 # TODO: load from config
 symbols = {'AR$': 'ARS',
             '$': 'USD',
@@ -51,7 +56,19 @@ class Money:
         return rates
 
     def get_rate(self, input_currency, output_currency=None):
-        pass
+        '''
+        This method returns dict with key as input currency code and value as
+            exchange rate input_currency/output_currency.
+        If output_currency is None or not specified, return exchange rates
+            to all supported currencies
+        TODO: add examples
+        '''
+        input_currency_rate = self.rates[input_currency]
+        if output_currency is None:
+            generate_rate = partial(mul, 1/input_currency_rate)
+            return valmap(generate_rate, self.rates)
+        else:
+            return {output_currency : self.rates[output_currency]}
 
     def convert(self, amount, input_currency, output_currency=None):
         pass
