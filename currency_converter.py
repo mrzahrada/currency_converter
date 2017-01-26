@@ -1,9 +1,11 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import sys
 
-def main():
+
+def main(argv):
     pass
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv)

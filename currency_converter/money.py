@@ -74,18 +74,34 @@ class Money:
         mul_by_amount = partial(mul, amount)
         return round(mul_by_amount(exchange_rate), 2)
 
-
     def convert(self, amount, input_currency, output_currency=None):
+        '''
+        This method takes, amount, input_currency,output_currency and
+        generates conversion. If output_currency is not defined or None,
+        geenerates conversion to all supported currencies.
+        return dictionary:
+            {
+                "input" : {
+                    "amount": <amount>,
+                    "currency": <input_currency>
+                },
+                "output": {
+                    "<output_currency>": <conversion_rate>
+                }
+            }
+        '''
         # correct inputs
         amount = float(amount)
         input_currency = self.get_code(input_currency)
         output_currency = self.get_code(output_currency)
         # get rates which interest me
         rates = self.get_rate(input_currency, output_currency)
-
+        # conversion function
         convert_single = partial(self.convert_from_rate, amount)
+        # convert rates that interested me
         output = valmap(convert_single, rates)
 
+        # TODO: ugly return, define method
         return {
             "input": {
                 "amount": amount,
@@ -95,4 +111,5 @@ class Money:
         }
 
     def try_convert(self, amount, input_currency, output_currency=None):
+        # TODO: return convert result or error message + return code ()
         pass
