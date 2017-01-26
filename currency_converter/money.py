@@ -13,18 +13,18 @@ symbols = {'AR$': 'ARS',
             '$': 'USD',
             'R$': 'BRL',
             'CL$': 'CLP',
-            '¥': 'JPY',
+            '¥': 'CNY',
             '€': 'EUR',
             '£': 'GBP',
             '₪': 'ILS',
             '₩': 'KRW',
             '฿': 'THB',
-            '₫': 'VND'
+            '₫': 'VND',
+            'Kč': 'CZK'
             }
 
 class Money:
     def __init__(self):
-
         self.url = "http://api.fixer.io/latest?base="
         self.base_currency = "USD"
         self.symbols = symbols
@@ -47,6 +47,23 @@ class Money:
         return self.rates.keys()
 
     def get_symbol(self, currency):
+        currency = str(currency).strip()
+
+        if self.symbols.get(currency) is not None:
+            return currency
+
+        currency = currency.upper()
+        for key, value in self.symbols.items():
+            if value == currency:
+                return key
+        return None
+
+    def update_rates(self):
+        '''
+        This class downloads latest rates if neccesary (ECB publish new
+        rates peridically) and store them in property.
+        Also updates property last_rates_update
+        '''
         pass
 
     def download_rates(self):
