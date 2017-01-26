@@ -1,0 +1,230 @@
+{
+  "created": "2017-01-26 16:58:00",
+  "currencies": [
+    {
+      "name":"Australia Dollar",
+      "code": "AUD",
+      "symbols": {
+          "suported" : ["A$","AU$"],
+          "not_suported": ["$"]
+      }
+    },
+    {
+      "name":"Bulgaria Lev",
+      "code": "BGN",
+      "symbols": {
+        "suported" : ["лв"]
+      }
+    },
+    {
+      "name":"Brazil Real",
+      "code": "BRL",
+      "symbols": {
+        "suported" : ["R$"],
+        "not_suported": ["$"]
+      }
+    },
+    {
+      "name":"Canada Dollar",
+      "code": "CAD",
+      "symbols": {
+        "suported" : ["Can$", "C$"],
+        "not_suported": ["$"]
+      }
+    },
+    {
+      "name":"China Yuan Renminbi",
+      "code": "CNY",
+      "symbols": {
+        "suported" : ["¥"]
+      }
+    },
+    {
+      "name":"Croatia Kuna",
+      "code": "HRK",
+      "symbols": {
+        "suported" : ["kn"]
+      }
+    },
+    {
+      "name":"Czech Republic Koruna",
+      "code": "CZK",
+      "symbols": {
+        "suported" : ["Kč"]
+       }
+    },
+    {
+      "name":"Denmark Krone",
+      "code": "DKK",
+      "symbols": {
+        "suported" : ["kr"],
+        "not_suported": []
+      }
+    },
+    {
+      "name":"Euro Member Countries",
+    	"code": "EUR",
+      "symbols": {
+        "suported" : ["€"]
+      }
+    },
+    {
+      "name":"Hong Kong Dollar",
+      "code": "HKD",
+      "symbols": {
+        "suported" : ["HK$"],
+        "not_suported": ["$"]
+      }
+    },
+    {
+      "name":"Hungary Forint",
+      "code": "HUF",
+      "symbols": {
+        "suported" : ["Ft"]
+      }
+    },
+    {
+      "name":"India Rupee",
+      "code": "INR",
+      "symbols": {
+        "suported" : ["₹"]
+      }
+    },
+    {
+      "name":"Israel Shekel",
+      "code": "ILS",
+      "symbols": {
+        "suported" : ["₪"]
+      }
+    },
+    {
+      "name":"Japan Yen",
+      "code": "JPY",
+      "symbols": {
+        "not_suported": ["¥"]
+      }
+    },
+    {
+      "name":"Korea (South) Won",
+      "code": "KRW",
+      "symbols": {
+        "suported" : ["₩"]
+      }
+    },
+    {
+      "name":"Malaysia Ringgit",
+      "code": "MYR",
+      "symbols": {
+        "suported" : ["RM"],
+      }
+    },
+    {
+      "name":"Mexico Peso",
+      "code": "MXN",
+    	"symbols": {
+        "not_suported": ["$"]
+      }
+    },
+    {
+      "name":"New Zealand Dollar",
+      "code": "NZD",
+      "symbols": {
+        "suported" : ["NZ$"],
+        "not_suported": ["$"]
+      }
+    },
+    {
+      "name":"Norway Krone",
+      "code": "NOK",
+      "symbols": {
+        "suported" : ["kr"],
+        "not_suported": []
+      }
+    },
+    {
+      "name":"Philippines Peso",
+      "code": "PHP",
+      "symbols": {
+        "suported" : ["₱"]
+      }
+    },
+    {
+      "name":"Poland Zloty",
+      "code": "PLN",
+      "symbols": {
+        "suported" : ["zł"]
+      }
+    },
+    {
+      "name":"Romania New Leu",
+      "code": "RON",
+      "symbols": {
+        "suported" : ["lei"]
+      }
+    },
+    {
+      "name":"Russia Ruble",
+      "code": "RUB",
+      "symbols": {
+        "suported" : ["₽"]
+      }
+    },
+    {
+      "name":"Singapore Dollar",
+      "code": "SGD",
+      "symbols": {
+        "suported" : [],
+        "not_suported": ["$"]}
+    },
+    {
+      "name":"South Africa Rand",
+      "code": "ZAR",
+      "symbols": {
+        "suported" : ["R"]
+      }
+    },
+    {
+      "name":"Sweden Krona",
+      "code": "SEK",
+      "symbols": {
+        "suported" : ["kr"],
+        "not_suported": []
+      }
+    },
+    {
+      "name":"Switzerland Franc",
+      "code": "CHF",
+      "symbols": {
+        "suported" : ["Fr","SFr","FS"]
+      }
+    },
+    {
+      "name":"Thailand Baht",
+      "code": "THB",
+      "symbols": {
+        "suported" : ["฿"]
+      }
+    },
+    {
+      "name":"Turkey Lira",
+      "code": "TRY",
+      "symbols": {
+        "suported" : ["₺"]
+      }
+    },
+    {
+      "name": "United Kingdom Pound",
+      "code": "GBP",
+      "symbols": {
+        "suported" : ["£"]
+      }
+    },
+    {
+      "name": "United States Dollar",
+      "code": "USD",
+      "symbols": {
+        "suported" : ["$"]
+      }
+    }
+  ]
+}
