@@ -70,6 +70,11 @@ class Money:
         else:
             return {output_currency : self.rates[output_currency]}
 
+    def convert_from_rate(self, amount, exchange_rate):
+        mul_by_amount = partial(mul, amount)
+        return round(mul_by_amount(exchange_rate), 2)
+
+
     def convert(self, amount, input_currency, output_currency=None):
         # correct inputs
         amount = float(amount)
@@ -78,11 +83,7 @@ class Money:
         # get rates which interest me
         rates = self.get_rate(input_currency, output_currency)
 
-        def convert_from_rate(amount, exchange_rate):
-            mul_by_amount = partial(mul, amount)
-            return round(mul_by_amount(exchange_rate), 2)
-
-        convert_single = partial(convert_from_rate, amount)
+        convert_single = partial(self.convert_from_rate, amount)
         output = valmap(convert_single, rates)
 
         return {

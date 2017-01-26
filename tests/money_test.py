@@ -154,6 +154,26 @@ class TestGetRate(unittest.TestCase):
     def tearDown(self):
         pass
 
+class TestConvertFromRate(unittest.TestCase):
+    # TODO: add more tests
+    @patch('urllib.request.urlopen')
+    def setUp(self, urlopen_mock):
+        urlopen_mock.return_value = MockResponse()
+        self.money =  Money()
+
+    def test_convert_from_rate(self):
+        rate = 1.23445
+        amount = 100
+
+        # rate*amount rounded
+        expected = 123.45
+        self.assertEqual(expected, self.money.convert_from_rate(amount, rate))
+
+    def tearDown(self):
+        pass
+
+
+
 class TestConvert(unittest.TestCase):
     @patch('urllib.request.urlopen')
     def setUp(self, urlopen_mock):
