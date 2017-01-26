@@ -12,6 +12,7 @@ class Money:
         self.rates = self.download_rates()
 
     def get_code(self, currency):
+        # TODO: beautify this code
         currency = str(currency).strip().upper()
         if self.rates.get(currency) is not None:
             return currency
@@ -22,7 +23,7 @@ class Money:
         return None
 
     def supported_currencies(self):
-        pass
+        return self.rates.keys()
 
     def get_symbol(self, currency):
         pass
