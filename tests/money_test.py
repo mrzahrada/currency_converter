@@ -80,8 +80,12 @@ class TestSupportedCurrencies(unittest.TestCase):
 
     def test_currencies(self):
         result = self.money.supported_currencies()
-        expected = []
-        self.assertEqual(result, expected)
+        expected = ["AUD","BGN","BRL","CAD","CHF","CNY","CZK","DKK","GBP",
+            "HKD","HRK","HUF","IDR","ILS","INR","JPY","KRW","MXN","MYR",
+            "NOK","NZD","PHP","PLN","RON","RUB","SEK","SGD","THB","TRY",
+            "ZAR","EUR"]
+        print(result)
+        self.assertCountEqual(expected, result)
 
     def tearDown(self):
         pass
