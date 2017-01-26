@@ -160,11 +160,11 @@ class TestConvert(unittest.TestCase):
         urlopen_mock.return_value = MockResponse()
         self.money =  Money()
 
-    def assertConvert(self, amount, input_currency, output_currency, expected_output):
+    def assertConvert(self, amount, input_currency, output_currency, expected_output, expected_input):
         result = self.money.convert(amount, input_currency, output_currency)
 
         self.assertEqual(amount, result["input"]["amount"])
-        self.assertEqual(input_currency, result["input"]["input_currency"])
+        self.assertEqual(expected_input, result["input"]["currency"])
         for key, value in expected_output.items():
             self.assertEqual(value, result["output"][key])
 
@@ -175,7 +175,7 @@ class TestConvert(unittest.TestCase):
         expected_output = {
             "EUR": 93.08
         }
-        self.assertConvert(amount, input_currency, output_currency, expected_output)
+        self.assertConvert(amount, input_currency, output_currency, expected_output, input_currency)
 
     def test_valid_code_none(self):
         amount = 100
@@ -185,7 +185,7 @@ class TestConvert(unittest.TestCase):
             "USD": 100,
             "EUR": 93.08
         }
-        self.assertConvert(amount, input_currency, output_currency, expected_output)
+        self.assertConvert(amount, input_currency, output_currency, expected_output, input_currency)
 
     def test_valid_symbol_code(self):
         amount = 100
@@ -194,7 +194,7 @@ class TestConvert(unittest.TestCase):
         expected_output = {
             "EUR": 93.08
         }
-        self.assertConvert(amount, input_currency, output_currency, expected_output)
+        self.assertConvert(amount, input_currency, output_currency, expected_output, "USD")
 
     def test_valid_code_symbol(self):
         amount = 100
@@ -203,7 +203,7 @@ class TestConvert(unittest.TestCase):
         expected_output = {
             "EUR": 93.08
         }
-        self.assertConvert(amount, input_currency, output_currency, expected_output)
+        self.assertConvert(amount, input_currency, output_currency, expected_output, input_currency)
 
     def test_valid_symbol_symbol(self):
         amount = 100
@@ -212,7 +212,7 @@ class TestConvert(unittest.TestCase):
         expected_output = {
             "EUR": 93.08
         }
-        self.assertConvert(amount, input_currency, output_currency, expected_output)
+        self.assertConvert(amount, input_currency, output_currency, expected_output, "USD")
 
     def test_valid_symbol_none(self):
         amount = 100
@@ -222,7 +222,7 @@ class TestConvert(unittest.TestCase):
             "USD": 100,
             "EUR": 93.08
         }
-        self.assertConvert(amount, input_currency, output_currency, expected_output)
+        self.assertConvert(amount, input_currency, output_currency, expected_output, input_currency)
 
     def tearDown(self):
         pass
