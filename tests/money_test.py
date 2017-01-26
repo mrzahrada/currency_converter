@@ -7,7 +7,6 @@ from mock import patch
 
 from currency_converter.money import Money
 
-
 test_data_path = "raw_data/test_rates.json"
 
 class MockResponse(object):
@@ -30,6 +29,14 @@ class MockResponse(object):
         with open(test_data_path) as data_file:
             data = json.load(data_file)
         return codecs.encode(json.dumps(data))
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exception_type, exception_value, traceback):
+        pass
+
+
 
 class TestGetCode(unittest.TestCase):
 
@@ -120,6 +127,12 @@ class TestDownloadRates(unittest.TestCase):
     def setUp(self, urlopen_mock):
         urlopen_mock.return_value = MockResponse()
         self.money =  Money()
+
+    def test_download(self):
+        m = MockResponse()
+        data = json.loads(m.read().decode('utf-8'))
+        data["rates"]["USD"] = 1.0
+        self.assertEqual(self.money.download_rates(), data['rates'])
 
     def tearDown(self):
         pass
