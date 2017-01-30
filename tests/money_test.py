@@ -156,6 +156,14 @@ class TestGetRate(unittest.TestCase):
         for cur, rate in self.rates.items():
             self.assertEqual(result[cur], rate)
 
+    def test_single_rate(self):
+        self.assertEqual(self.money.get_rate("USD", "USD"), 1.0)
+        self.assertEqual(self.money.get_rate("EUR", "USD"), 1.07430)
+        self.assertEqual(self.money.get_rate("USD", "JPY"), 113.37)
+        self.assertEqual(self.money.get_rate("GBP", "CNY"), 8.66536)
+        self.assertEqual(self.money.get_rate("CNY", "JPY"), 16.47293)
+        self.assertEqual(self.money.get_rate("USD", "CZK"), 0.03976)
+
     def tearDown(self):
         pass
 
