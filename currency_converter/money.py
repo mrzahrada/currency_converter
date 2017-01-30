@@ -1,6 +1,6 @@
 
 
-import urllib
+import urllib.request
 import json
 
 from operator import mul
@@ -78,11 +78,11 @@ class Money:
         TODO: add examples
         '''
         input_currency_rate = self.rates[input_currency]
+        generate_rate = partial(mul, 1/input_currency_rate)
         if output_currency is None:
-            generate_rate = partial(mul, 1/input_currency_rate)
             return valmap(generate_rate, self.rates)
         else:
-            return {output_currency : self.rates[output_currency]}
+            return {output_currency : generate_rate(self.rates[output_currency])}
 
     def convert_from_rate(self, amount, exchange_rate):
         mul_by_amount = partial(mul, amount)
