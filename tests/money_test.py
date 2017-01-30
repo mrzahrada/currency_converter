@@ -151,18 +151,18 @@ class TestGetRate(unittest.TestCase):
         self.money =  Money()
         self.rates = {'AUD': 1.323, 'BGN': 1.8205, 'BRL': 3.1702, 'CAD': 1.3097, 'CHF': 0.99898, 'CNY': 6.8822, 'CZK': 25.153, 'DKK': 6.9223, 'GBP': 0.79422, 'HKD': 7.7579, 'HRK': 6.9792, 'HUF': 288.3, 'IDR': 13330.0, 'ILS': 3.785, 'INR': 68.08, 'JPY': 113.37, 'KRW': 1164.9, 'MXN': 21.472, 'MYR': 4.4315, 'NOK': 8.3266, 'NZD': 1.3766, 'PHP': 49.638, 'PLN': 4.0623, 'RON': 4.1875, 'RUB': 59.227, 'SEK': 8.8274, 'SGD': 1.4184, 'THB': 35.23, 'TRY': 3.8241, 'ZAR': 13.273, 'EUR': 0.93084, 'USD': 1.0}
 
-    def test_all_rates(self):
+    def test_all_rates_USD(self):
         result = self.money.get_rate("USD")
         for cur, rate in self.rates.items():
             self.assertEqual(result[cur], rate)
 
     def test_single_rate(self):
-        self.assertEqual(self.money.get_rate("USD", "USD"), 1.0)
-        self.assertEqual(self.money.get_rate("EUR", "USD"), 1.07430)
-        self.assertEqual(self.money.get_rate("USD", "JPY"), 113.37)
-        self.assertEqual(self.money.get_rate("GBP", "CNY"), 8.66536)
-        self.assertEqual(self.money.get_rate("CNY", "JPY"), 16.47293)
-        self.assertEqual(self.money.get_rate("USD", "CZK"), 0.03976)
+        self.assertEqual(self.money.get_rate("USD", "USD")["USD"], 1.0)
+        self.assertTrue(abs(self.money.get_rate("EUR", "USD")["USD"]-1.07430)  < 0.00001)
+        self.assertTrue(abs(self.money.get_rate("USD", "JPY")["JPY"]-113.37)   < 0.00001)
+        self.assertTrue(abs(self.money.get_rate("GBP", "CNY")["CNY"]-8.66536)  < 0.00001)
+        self.assertTrue(abs(self.money.get_rate("CNY", "JPY")["JPY"]-16.47293) < 0.00001)
+        self.assertTrue(abs(self.money.get_rate("USD", "CZK")["CZK"]-25.153)   < 0.00001)
 
     def tearDown(self):
         pass
