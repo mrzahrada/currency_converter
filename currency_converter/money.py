@@ -2,13 +2,19 @@
 
 import urllib.request
 import json
+import sys
 
+from datetime import datetime
 from operator import mul
 from toolz import valmap
 from toolz.functoolz import  partial
 
+from currency_converter.exceptions import ConnectionError, UnsupportedCurrencyError
 
 def load_json(file_path):
+    '''
+    From file returns json
+    '''
     with open(file_path) as data_file:
         data = json.load(data_file)
     return data
@@ -19,7 +25,7 @@ class Money:
         self.base_currency = "USD"
         self.symbols = self.load_symbols()
         self.rates = self.download_rates()
-
+        self.last_rates_update = datetime.utcnow()
 
     def load_symbols(self):
         currencies = load_json('raw_data/currencies.json')["currencies"]
@@ -31,12 +37,7 @@ class Money:
                 result[symbol] = cur['code']
         return result
 
-
-
     def get_code(self, currency):
-        # TODO: beautify this code
-        # TODO: kr -> SEK, DKK, NOK. so for kr symbol raise exception
-        #       try_convert should return help message with possible codes
         currency = str(currency).strip().upper()
         if currency in self.rates:
             return currency
@@ -44,9 +45,15 @@ class Money:
         return self.symbols.get(currency)
 
     def supported_currencies(self):
+        '''
+        This method returns all supported currency codes
+        '''
         return self.rates.keys()
 
     def get_symbol(self, currency):
+        '''
+        This method returns symbol for any supported currency. Otherwise returns None.
+        '''
         currency = str(currency).strip()
 
         if self.symbols.get(currency) is not None:
@@ -64,13 +71,22 @@ class Money:
         rates peridically) and store them in property.
         Also updates property last_rates_update
         '''
-        pass
+        # TODO: check datetime
+        self.rates = self.download_rates()
+        self.last_rates_update = datetime.utcnow()
 
     def download_rates(self):
-        with urllib.request.urlopen(self.url + self.base_currency) as req:
-            rates = json.loads(req.read().decode('utf-8'))['rates']
-        rates[self.base_currency] = 1.0
-        return rates
+        try:
+            with urllib.request.urlopen(self.url + self.base_currency) as req:
+                rates = json.loads(req.read().decode('utf-8'))['rates']
+            rates[self.base_currency] = 1.0
+            return rates
+        except urllib.error.URLError as e:
+            raise ConnectionError("Can't download rates, url error.")
+        except urllib.error.HTTPError as e:
+            raise ConnectionError("Can't download rates, http error.")
+        except:
+            raise ConnectionError("Can't download rates")
 
     def get_rate(self, input_currency, output_currency=None):
         '''
@@ -111,6 +127,10 @@ class Money:
         amount = float(amount)
         input_currency = self.get_code(input_currency)
         output_currency = self.get_code(output_currency)
+        # input_currency has to be specified
+        if input_currency is None:
+            raise UnsupportedCurrencyError("Unknown input currency")
+ 
         # get rates which interest me
         rates = self.get_rate(input_currency, output_currency)
         # conversion function
@@ -118,7 +138,6 @@ class Money:
         # convert rates that interested me
         output = valmap(convert_single, rates)
 
-        # TODO: ugly return, define method
         return {
             "input": {
                 "amount": amount,
@@ -128,5 +147,20 @@ class Money:
         }
 
     def try_convert(self, amount, input_currency, output_currency=None):
-        # TODO: return convert result or error message + return code ()
-        pass
+        '''
+        This method calls convert safely, returns convert result
+        or error message. And error code
+        '''
+        try:
+            return self.convert(amount, input_currency, output_currency), 0
+        except ConnectionError as e:
+            return { 'ConnectionError': str(e)}, 1
+        except UnsupportedCurrencyError as e:
+            return { 'UnsupportedCurrencyError': str(e)}, 1
+        except ValueError as e:
+            return {'ValueError': 'Wrong input type.'}, 1
+        except:
+            e = sys.exc_info()[0]
+            return { 'error': str(e)}, 1
+
+
