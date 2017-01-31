@@ -8,27 +8,30 @@ from toolz import valmap
 from toolz.functoolz import  partial
 
 
-# TODO: load from config
-symbols = {'AR$': 'ARS',
-            '$': 'USD',
-            'R$': 'BRL',
-            'CL$': 'CLP',
-            '¥': 'CNY',
-            '€': 'EUR',
-            '£': 'GBP',
-            '₪': 'ILS',
-            '₩': 'KRW',
-            '฿': 'THB',
-            '₫': 'VND',
-            'Kč': 'CZK'
-            }
+def load_json(file_path):
+    with open(file_path) as data_file:
+        data = json.load(data_file)
+    return data
 
 class Money:
     def __init__(self):
         self.url = "http://api.fixer.io/latest?base="
         self.base_currency = "USD"
-        self.symbols = symbols
+        self.symbols = self.load_symbols()
         self.rates = self.download_rates()
+
+
+    def load_symbols(self):
+        currencies = load_json('raw_data/currencies.json')["currencies"]
+        result = {}
+        for cur in currencies:
+            if cur['symbols'].get('suported') is None:
+                continue
+            for symbol in cur['symbols']['suported']:
+                result[symbol] = cur['code']
+        return result
+
+
 
     def get_code(self, currency):
         # TODO: beautify this code

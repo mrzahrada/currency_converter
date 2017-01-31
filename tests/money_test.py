@@ -55,17 +55,14 @@ class TestGetCode(unittest.TestCase):
         self.assertEqual(self.money.get_code("abcd"), None)
         self.assertEqual(self.money.get_code(44), None)
         self.assertEqual(self.money.get_code(None), None)
-        # ZAR - it's not listed in ECB exchange rates
-        self.assertEqual(self.money.get_code("R"), None)
-
+        self.assertEqual(self.money.get_code("₫"), None)
     def test_valid_symbol(self):
         self.assertEqual(self.money.get_code("$"), "USD")
         self.assertEqual(self.money.get_code("€"), "EUR")
         self.assertEqual(self.money.get_code("£"), "GBP")
         self.assertEqual(self.money.get_code("₩"), "KRW")
         self.assertEqual(self.money.get_code("฿"), "THB")
-        self.assertEqual(self.money.get_code("₫"), "VND")
-
+        self.assertEqual(self.money.get_code("R"), "ZAR")
     def tearDown(self):
         pass
 
@@ -111,8 +108,7 @@ class TestGetSymbol(unittest.TestCase):
         self.assertEqual(self.money.get_symbol("abcd"), None)
         self.assertEqual(self.money.get_symbol(44), None)
         self.assertEqual(self.money.get_symbol(None), None)
-        # ZAR - it's not listed in ECB exchange rates
-        self.assertEqual(self.money.get_symbol("R"), None)
+        self.assertEqual(self.money.get_symbol("   ₫  "), None)
         self.assertEqual(self.money.get_symbol("$$"), None)
         self.assertEqual(self.money.get_symbol("€€"), None)
         self.assertEqual(self.money.get_symbol(" ₩ ₩ "), None)
@@ -123,8 +119,7 @@ class TestGetSymbol(unittest.TestCase):
         self.assertEqual(self.money.get_symbol(" £ "), "£")
         self.assertEqual(self.money.get_symbol(" ₩"), "₩")
         self.assertEqual(self.money.get_symbol("฿ "), "฿")
-        self.assertEqual(self.money.get_symbol("   ₫  "), "₫")
-
+        self.assertEqual(self.money.get_symbol("R"), "R")
     def tearDown(self):
         pass
 
