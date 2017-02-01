@@ -11,6 +11,7 @@ from toolz.functoolz import  partial
 
 from currency_converter.exceptions import ConnectionError, UnsupportedCurrencyError
 
+
 def load_json(file_path):
     '''
     From file returns json
@@ -19,7 +20,11 @@ def load_json(file_path):
         data = json.load(data_file)
     return data
 
+
 class Money:
+    '''
+    Foreign exchange rates and currency conversion.
+    '''
     def __init__(self):
         self.url = "http://api.fixer.io/latest?base="
         self.base_currency = "USD"
@@ -71,11 +76,14 @@ class Money:
         rates peridically) and store them in property.
         Also updates property last_rates_update
         '''
-        # TODO: check datetime
+        print("")
         self.rates = self.download_rates()
         self.last_rates_update = datetime.utcnow()
 
     def download_rates(self):
+        '''
+        TODO: check datetime
+        '''
         try:
             with urllib.request.urlopen(self.url + self.base_currency) as req:
                 rates = json.loads(req.read().decode('utf-8'))['rates']
@@ -94,8 +102,8 @@ class Money:
             exchange rate input_currency/output_currency.
         If output_currency is None or not specified, return exchange rates
             to all supported currencies
-        TODO: add examples
         '''
+        # TODO: call update_rates
         input_currency_rate = self.rates[input_currency]
         generate_rate = partial(mul, 1/input_currency_rate)
         if output_currency is None:
