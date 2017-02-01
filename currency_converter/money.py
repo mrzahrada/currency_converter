@@ -4,12 +4,12 @@ import urllib.request
 import json
 import sys
 
-from datetime import datetime
 from operator import mul
 from toolz import valmap
-from toolz.functoolz import  partial
+from toolz.functoolz import partial
 
-from currency_converter.exceptions import ConnectionError, UnsupportedCurrencyError
+from currency_converter.exceptions import ConnectionError
+from currency_converter.exceptions import UnsupportedCurrencyError
 
 
 def load_json(file_path):
@@ -30,7 +30,6 @@ class Money:
         self.base_currency = "USD"
         self.symbols = self.load_symbols()
         self.rates = self.download_rates()
-        self.last_rates_update = datetime.utcnow()
 
     def load_symbols(self):
         currencies = load_json('raw_data/currencies.json')["currencies"]
@@ -57,7 +56,8 @@ class Money:
 
     def get_symbol(self, currency):
         '''
-        This method returns symbol for any supported currency. Otherwise returns None.
+        This method returns symbol for any supported currency.
+        Otherwise returns None.
         '''
         currency = str(currency).strip()
 
@@ -72,13 +72,10 @@ class Money:
 
     def update_rates(self):
         '''
-        This class downloads latest rates if neccesary (ECB publish new
-        rates peridically) and store them in property.
-        Also updates property last_rates_update
+        This class downloads latest rates and store them in property.
+        TODO: update rates every day at 16:00 CET
         '''
-        print("")
         self.rates = self.download_rates()
-        self.last_rates_update = datetime.utcnow()
 
     def download_rates(self):
         '''
@@ -103,13 +100,14 @@ class Money:
         If output_currency is None or not specified, return exchange rates
             to all supported currencies
         '''
-        # TODO: call update_rates
         input_currency_rate = self.rates[input_currency]
         generate_rate = partial(mul, 1/input_currency_rate)
         if output_currency is None:
             return valmap(generate_rate, self.rates)
         else:
-            return {output_currency : generate_rate(self.rates[output_currency])}
+            return {
+                output_currency: generate_rate(self.rates[output_currency])
+                }
 
     def convert_from_rate(self, amount, exchange_rate):
         mul_by_amount = partial(mul, amount)
@@ -138,7 +136,7 @@ class Money:
         # input_currency has to be specified
         if input_currency is None:
             raise UnsupportedCurrencyError("Unknown input currency")
- 
+
         # get rates which interest me
         rates = self.get_rate(input_currency, output_currency)
         # conversion function
@@ -162,13 +160,11 @@ class Money:
         try:
             return self.convert(amount, input_currency, output_currency), 0
         except ConnectionError as e:
-            return { 'ConnectionError': str(e)}, 1
+            return {'ConnectionError': str(e)}, 1
         except UnsupportedCurrencyError as e:
-            return { 'UnsupportedCurrencyError': str(e)}, 1
+            return {'UnsupportedCurrencyError': str(e)}, 1
         except ValueError as e:
             return {'ValueError': 'Wrong input type.'}, 1
         except:
             e = sys.exc_info()[0]
-            return { 'error': str(e)}, 1
-
-
+            return {'error': str(e)}, 1

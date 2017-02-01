@@ -15,7 +15,7 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Currency converter')
     parser.add_argument('--amount', type=str, help="Amount which we want to convert", required=True)
-    parser.add_argument('--input_currency', type=str,  help="input currency - 3 letters name or currency symbol", required=True)
+    parser.add_argument('--input_currency', type=str, help="input currency - 3 letters name or currency symbol", required=True)
     parser.add_argument('--output_currency', type=str, help="output currency - 3 letters name or currency symbol", required=False)
     args = parser.parse_args()
     main(args)
